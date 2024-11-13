@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Product Page</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background-color: #f5f5f5;
+        }
+        .product-container {
+            max-width: 500px;
+            max-height: 600px;
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        .main-image {
+            width: 100%;
+            height: 400px;
+            object-fit: cover;
+            border-radius: 8px;
+            margin-bottom: 20px;
+        }
+        .thumbnails {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+        .thumbnail {
+            width: 80px;
+            height: 80px;
+            object-fit: cover;
+            border: 2px solid transparent;
+            cursor: pointer;
+            border-radius: 8px;
+        }
+        .thumbnail.active {
+            border-color: #e83d52;
+        }
+        .product-info {
+            margin-bottom: 20px;
+        }
+        .product-info h1 {
+            margin: 0;
+            font-size: 24px;
+        }
+        .selector, .price {
+            margin-top: 10px;
+        }
+        select, input[type="number"] {
+            padding: 5px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+        .price {
+            font-size: 18px;
+            font-weight: bold;
+            color: #e83d52;
+            margin-top: 10px;
+        }
+        .add-to-cart {
+            padding: 10px 20px;
+            background-color: #04411f;
+            color: #fff;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        #mainImage {
+            max-width: 200px;
+            max-height: 200px;
+        }
+    </style>
+</head>
+<body>
+    <div class="product-container">
+        <img id="mainImage" src="https://cgifurniture.com/wp-content/uploads/2020/06/types-of-cg-product-images-view07.jpg" alt="Main Product Image" class="main-image">
+        
+        <div class="thumbnails">
+            <img src="https://cgifurniture.com/wp-content/uploads/2020/06/types-of-cg-product-images-view07.jpg" alt="Thumbnail 1" class="thumbnail active" onclick="changeImage('https://cgifurniture.com/wp-content/uploads/2020/06/types-of-cg-product-images-view07.jpg')">
+            <img src="https://cgifurniture.com/wp-content/uploads/2020/06/360-View0014.jpg" alt="Thumbnail 2" class="thumbnail" onclick="changeImage('https://cgifurniture.com/wp-content/uploads/2020/06/360-View0014.jpg')">
+            <img src="https://cgifurniture.com/wp-content/uploads/2020/06/360-View0004.jpg" alt="Thumbnail 3" class="thumbnail" onclick="changeImage('https://cgifurniture.com/wp-content/uploads/2020/06/360-View0004.jpg')">
+            <img src="https://cgifurniture.com/wp-content/uploads/2020/06/types-of-cg-product-images-view07.jpg" alt="Thumbnail 4" class="thumbnail" onclick="changeImage('https://cgifurniture.com/wp-content/uploads/2020/06/types-of-cg-product-images-view07.jpg')">
+        </div>
+
+        <div class="product-info">
+            <h1>Chair</h1>
+            
+            <div class="selector">
+                <label for="size">Size:</label>
+                <select id="size" onchange="updatePrice()">
+                    <option value="small" data-price="50">Small - $50</option>
+                    <option value="medium" data-price="70">Medium - $70</option>
+                    <option value="large" data-price="90">Large - $90</option>
+                </select>
+            </div>
+
+            <div class="selector">
+                <label for="quantity">Quantity:</label>
+                <input type="number" id="quantity" value="1" min="1" onchange="updatePrice()">
+            </div>
+
+            <div class="price" id="price">$50</div>
+        </div>
+
+        <button class="add-to-cart" onclick="sendToWhatsApp()"> 💬 Order In whatsapp</button>
+    </div>
+
+    <script>
+        function changeImage(imageSrc) {
+            document.getElementById('mainImage').src = imageSrc;
+            const thumbnails = document.querySelectorAll('.thumbnail');
+            thumbnails.forEach(thumbnail => thumbnail.classList.remove('active'));
+            // Set the clicked thumbnail as active
+            event.target.classList.add('active');
+        }
+
+        function updatePrice() {
+            const size = document.getElementById('size');
+            const quantity = document.getElementById('quantity').value;
+            const selectedOption = size.options[size.selectedIndex];
+            const basePrice = selectedOption.getAttribute('data-price');
+            const totalPrice = basePrice * quantity;
+            document.getElementById('price').textContent = `$${totalPrice}`;
+        }
+
+        function sendToWhatsApp() {
+        const size = document.getElementById('size').value;
+        const quantity = document.getElementById('quantity').value;
+        const selectedOption = document.getElementById('size').selectedOptions[0];
+        const pricePerItem = selectedOption.getAttribute('data-price');
+        const subtotal = pricePerItem * quantity;
+
+        const message = `🛍️ *New Order Confirmation* 🛍️\n\n📦 *Order Details:*\n1. Chair\nSize: ${size}\nQuantity: ${quantity} x $${pricePerItem}\nSubtotal: $${subtotal}\n\n──────────────────\n💰 *Total:* $${subtotal}\n──────────────────`;
+
+        const whatsappUrl = `https://wa.me/8111866093?text=${encodeURIComponent(message)}`;
+        window.open(whatsappUrl, '_blank');
+    }
+    </script>
+</body>
+</html>
